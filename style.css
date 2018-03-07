@@ -1,0 +1,74 @@
+body {
+    vertical-align: middle;
+}
+
+.vertical-align {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+
+.game {
+    height: 400px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+}
+
+.gameContainer {
+    vertical-align: bottom;
+}
+
+.gameContainer p {
+    font-size: 40px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.game-controls {
+    margin-bottom: 30px;
+}
+
+.game-controls * {
+    display: inline-block;
+}
+
+.game-controls input {
+    font-size: 20px;
+    margin-right: 20px;
+    line-height: 30px;
+}
+
+.game-input-container .points-btn {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    padding: 0;
+    border: none;
+    font-size: 30px;
+}
+
+.game-input-container .points-count {
+    font-size: 30px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+button {
+    font-size: 20px;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px 10px 10px 10px;
+}
+
+.gameChoice {
+    margin-right: 20px;
+}
+
+.gameChoice.last {
+    margin-right: 0;
+}
