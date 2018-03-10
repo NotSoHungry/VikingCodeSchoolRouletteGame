@@ -48,10 +48,18 @@ Roulette.prototype.isNumberEven = function() {
 }
 
 Roulette.prototype = {
+    get player () {
+        return this._player;
+    },
+    get specialNumbers () {
+        return this._specialNumbers;
+    },
+    get normalNumbers () {
+        return this_.normalNumbers;
+    },
     get moneyAmount () {
         return this._moneyAmount;
     },
-
     set moneyAmount (value) {
         this._moneyAmount = value;
     }
