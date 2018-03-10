@@ -8,43 +8,39 @@ function Roulette (playerName, playerMoney) {
     this._normalNumbers = (function() {
         
         function isNumEvenOrOdd (number) {
-            return (number % 2 === 0) ? "Even" : "Odd";
+            return (number % 2 === 0) ? "even" : "odd";
         }
         function whichColor (number) {
             var isNumberRed = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36].filter((element) => {
                 return element === number;
             })
         
-            return (isNumberRed[0]) ? "Red" : "Black";
+            return (isNumberRed[0]) ? "red" : "black";
         }
         function belongsToWhichHalf (number) {
-            return (number < 19) ? "firstHalf" : "secondHalf";
+            return (number < 19) ? "first" : "second";
         }
         function belongsToWhichTwelve (number) {
-            return (number < 13) ? "firstTwelve" :
-                   (number < 25) ? "secondTwelve" : "thirdTwelve";
+            return (number < 13) ? "first" :
+                   (number < 25) ? "second" : "third";
         }
         var arr = [];
     
         for (i = 1; i <= 36; i++) {
-            arr.push(String(i));
+            arr.push(i);
         }   
         return arr.map((element, index, array) => {
             return {
                 number: array[index],
-                evenOrOdd: isNumEvenOrOdd(Number(element)),
-                color: whichColor(Number(element)),
-                whichHalf: belongsToWhichHalf(Number(element)),
-                whichTwelve: belongsToWhichTwelve(Number(element))
+                evenOrOdd: isNumEvenOrOdd(element),
+                color: whichColor(element),
+                whichHalf: belongsToWhichHalf(element),
+                whichTwelve: belongsToWhichTwelve(element)
             }
         })
     
     })();
 
-}
-
-Roulette.prototype.isNumberEven = function() {
-    return "Even";
 }
 
 Roulette.prototype = {
@@ -55,7 +51,7 @@ Roulette.prototype = {
         return this._specialNumbers;
     },
     get normalNumbers () {
-        return this_.normalNumbers;
+        return this._normalNumbers;
     },
     get moneyAmount () {
         return this._moneyAmount;
@@ -65,29 +61,38 @@ Roulette.prototype = {
     }
 }
 
-Roulette.prototype.winBet = function (money) {
+Roulette.prototype.winBet = function (money, checkedValue) {
     this.moneyAmount += money;
-    console.log(`Your bet: ${this._currentBet}, Current spin: ${this._currentSpin} - you've won $${money}`);
+    console.log(`Your bet: ${this._currentBet}, Current spin: ${checkedValue} - you've won $${money}`);
 }
 
-Roulette.prototype.loseBet = function (money) {
+Roulette.prototype.loseBet = function (money, checkedValue) {
     this.moneyAmount -= money;
-    console.log(`Your bet: ${this._currentBet}, Current spin: ${this._currentSpin} - you've lose $${money}`);
+    console.log(`Your bet: ${this._currentBet}, Current spin: ${checkedValue} - you've lose $${money}`);
 }
 
 Roulette.prototype.spin = function () {
-    return Math.floor(Math.random() * 38);
+    let spinResult = Math.floor(Math.random() * 38);
+    
+    return (spinResult === 0) ? this._specialNumbers[0] :
+           (spinResult === 37) ? this._specialNumbers[1] : this._normalNumbers[spinResult - 1];
 }
 
-Roulette.prototype.checkBet = function (userBet, betMoney, singleSpin) {
-    this._currentSpin = singleSpin();
+Roulette.prototype.bet = function (userBet, betMoney) {
+    this._currentSpin = this.spin();
     this._currentBet = userBet;
+
+    let checkedValue = null;
 
     switch (true) {
         case (userBet > 0 && userBet < 36):
-            (userBet == this._currentSpin) ? this.winBet(betMoney * 35) : this.loseBet(betMoney);
+            checkedValue = this._currentSpin.number;
+            (userBet == checkedValue) ? this.winBet(betMoney * 35, checkedValue) : this.loseBet(betMoney, checkedValue);
             break;
-
+        case (userBet.toLowerCase() == "odd" || userBet.toLowerCase() == "even"):
+        checkedValue = this._currentSpin.evenOrOdd;
+        (userBet.toLowerCase() == checkedValue) ? this.winBet(betMoney, checkedValue) : this.loseBet(betMoney, checkedValue);
+        break;
     }
 }
 
@@ -98,3 +103,5 @@ Roulette.prototype.buyIn = function (money) {
        return "You cannot take this!";
    }
 }
+
+let game = new Roulette("Pawel", 1000);
